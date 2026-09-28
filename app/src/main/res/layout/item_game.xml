@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="118dp"
+    android:orientation="horizontal" android:padding="8dp" android:background="@drawable/bg_card">
+    <ImageView android:id="@+id/cover" android:layout_width="86dp" android:layout_height="102dp"
+        android:scaleType="centerCrop"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1" android:orientation="vertical" android:paddingLeft="13dp" android:paddingTop="3dp">
+        <TextView android:id="@+id/title" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textColor="@color/text" android:textStyle="bold" android:textSize="17sp" android:maxLines="1"
+            android:ellipsize="end"/>
+        <TextView android:id="@+id/meta" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textColor="@color/muted" android:textSize="12sp" android:layout_marginTop="3dp"/>
+        <TextView android:id="@+id/rating" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textColor="@color/gold" android:textSize="12sp" android:layout_marginTop="7dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" android:gravity="center_vertical">
+            <TextView android:id="@+id/price" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:textColor="@color/text" android:textStyle="bold" android:textSize="14sp"/>
+            <TextView android:id="@+id/discount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/green" android:textStyle="bold" android:textSize="11sp"/>
+            <TextView android:id="@+id/btnCartItem" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/accent2" android:textSize="15sp" android:paddingStart="8dp" android:paddingEnd="2dp"
+                android:text="🛒"/>
+            <TextView android:id="@+id/btnFavItem" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/accent2" android:textSize="18sp" android:paddingStart="8dp" android:paddingEnd="4dp"
+                android:text="♡"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
