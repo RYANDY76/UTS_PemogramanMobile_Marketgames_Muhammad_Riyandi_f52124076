@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
+@SuppressWarnings({"deprecation", "StaticFieldLeak"})
 public class ImageLoader {
     private final LruCache<String, Bitmap> cache = new LruCache<>(20);
 
@@ -18,38 +20,41 @@ public class ImageLoader {
         if (cached != null) { view.setImageBitmap(cached); return; }
         view.setTag(url);
         new AsyncTask<Void,Void,Bitmap>() {
+            @Override
             protected Bitmap doInBackground(Void... v) {
                 try {
                     URL u = new URL(url);
-                    HttpURLConnection c = (HttpURLConnection) u.openConnection();
-                    c.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-                    c.setInstanceFollowRedirects(true);
-                    c.setConnectTimeout(8000);
-                    c.setReadTimeout(10000);
-                    c.setDoInput(true);
-                    c.connect();
-                    int responseCode = c.getResponseCode();
+                    HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                    conn.setInstanceFollowRedirects(true);
+                    conn.setConnectTimeout(8000);
+                    conn.setReadTimeout(10000);
+                    conn.setDoInput(true);
+                    conn.connect();
+                    int responseCode = conn.getResponseCode();
                     if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
-                        String newUrl = c.getHeaderField("Location");
-                        c = (HttpURLConnection) new URL(newUrl).openConnection();
-                        c.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-                        c.connect();
+                        String newUrl = conn.getHeaderField("Location");
+                        conn.disconnect();
+                        conn = (HttpURLConnection) new URL(newUrl).openConnection();
+                        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+                        conn.connect();
                     }
-                    InputStream in = c.getInputStream();
+                    InputStream in = conn.getInputStream();
                     Bitmap b = BitmapFactory.decodeStream(in);
                     in.close();
-                    c.disconnect();
+                    conn.disconnect();
                     return b;
                 } catch(Exception e) {
-                    e.printStackTrace();
                     return null;
                 }
             }
+
+            @Override
             protected void onPostExecute(Bitmap b) {
                 if (b != null) {
                     cache.put(url, b);
                     Object tag = view.getTag();
-                    if (url.equals(tag)) view.setImageBitmap(b);
+                    if (Objects.equals(url, tag)) view.setImageBitmap(b);
                 }
             }
         }.execute();

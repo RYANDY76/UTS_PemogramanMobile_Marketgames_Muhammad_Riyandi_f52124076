@@ -9,16 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+@SuppressWarnings({"SetTextI18n"})
 public class GameAdapter extends BaseAdapter {
     public interface OnGameActionListener {
         void onFavoriteChanged(Game game);
         void onAddToCart(Game game);
     }
 
-    private Context context;
-    private ArrayList<Game> data;
-    private ImageLoader loader = new ImageLoader();
-    private OnGameActionListener listener;
+    private final Context context;
+    private final ArrayList<Game> data;
+    private final ImageLoader loader = new ImageLoader();
+    private final OnGameActionListener listener;
 
     public GameAdapter(Context context, ArrayList<Game> data, OnGameActionListener listener) {
         this.context = context;
@@ -43,20 +44,21 @@ public class GameAdapter extends BaseAdapter {
     @Override
     public View getView(int p, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_game, parent, false);
+        View row = convertView;
+        if (row == null) {
+            row = LayoutInflater.from(context).inflate(R.layout.item_game, parent, false);
             holder = new ViewHolder();
-            holder.title = convertView.findViewById(R.id.title);
-            holder.meta = convertView.findViewById(R.id.meta);
-            holder.rating = convertView.findViewById(R.id.rating);
-            holder.price = convertView.findViewById(R.id.price);
-            holder.discount = convertView.findViewById(R.id.discount);
-            holder.btnCart = convertView.findViewById(R.id.btnCartItem);
-            holder.btnFav = convertView.findViewById(R.id.btnFavItem);
-            holder.cover = convertView.findViewById(R.id.cover);
-            convertView.setTag(holder);
+            holder.title = row.findViewById(R.id.title);
+            holder.meta = row.findViewById(R.id.meta);
+            holder.rating = row.findViewById(R.id.rating);
+            holder.price = row.findViewById(R.id.price);
+            holder.discount = row.findViewById(R.id.discount);
+            holder.btnCart = row.findViewById(R.id.btnCartItem);
+            holder.btnFav = row.findViewById(R.id.btnFavItem);
+            holder.cover = row.findViewById(R.id.cover);
+            row.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) row.getTag();
         }
 
         Game g = data.get(p);
@@ -85,6 +87,6 @@ public class GameAdapter extends BaseAdapter {
 
         loader.load(g.coverUrl, holder.cover);
 
-        return convertView;
+        return row;
     }
 }

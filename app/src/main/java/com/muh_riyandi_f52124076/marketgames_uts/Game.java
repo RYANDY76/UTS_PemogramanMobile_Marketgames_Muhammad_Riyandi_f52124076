@@ -1,6 +1,7 @@
 package com.muh_riyandi_f52124076.marketgames_uts;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class Game {
     String title, genre, publisher, rating, price, discount, coverUrl, description, aliases;
@@ -16,7 +17,7 @@ public class Game {
         this.discount = discount;
         this.coverUrl = coverUrl;
         this.description = description;
-        this.aliases = aliases != null ? aliases : "";
+        this.aliases = Objects.requireNonNullElse(aliases, "");
     }
 
     public int getPriceValue() {
@@ -37,12 +38,10 @@ public class Game {
     }
 
     public boolean matches(String query, String category, boolean favoriteOnly) {
-        // Favorite filter check
         if (favoriteOnly && !isFavorite) {
             return false;
         }
 
-        // Category check
         if (category != null && !category.equalsIgnoreCase("Semua") && !category.isEmpty()) {
             String cat = category.toLowerCase(Locale.ROOT);
             if (!genre.toLowerCase(Locale.ROOT).contains(cat)) {
@@ -50,7 +49,6 @@ public class Game {
             }
         }
 
-        // Search query check
         if (query == null || query.trim().isEmpty()) {
             return true;
         }

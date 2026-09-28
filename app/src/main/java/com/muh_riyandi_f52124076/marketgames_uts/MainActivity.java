@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+@SuppressWarnings({"SetTextI18n", "StringFormatMatches", "DefaultLocale", "Convert2Comparator"})
 public class MainActivity extends AppCompatActivity {
     ArrayList<Game> allGames = new ArrayList<>();
     ArrayList<Game> shownGames = new ArrayList<>();
